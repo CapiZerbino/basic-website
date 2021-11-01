@@ -72,6 +72,38 @@ module.exports = function(app, passport) {
 		req.logout();
 		res.redirect('/');
 	});
+	// =====================================
+	// SEARCH SECTION =========================
+	// =====================================
+	app.get('/search', checkAuthenticated, function(req, res) {
+		res.render('search.ejs', {
+			user : req.user // get the user out of session and pass to template
+		});
+	});
+	// =====================================
+	// UPDATE SECTION =========================
+	// =====================================
+	app.get('/update', checkAuthenticated, function(req, res) {
+		res.render('update.ejs', {
+			user : req.user // get the user out of session and pass to template
+		});
+	});
+	// =====================================
+	// CATEGORY SECTION =========================
+	// =====================================
+	app.get('/category', checkAuthenticated, function(req, res) {
+		res.render('category.ejs', {
+			user : req.user // get the user out of session and pass to template
+		});
+	});
+	// =====================================
+	// ORDER SECTION =========================
+	// =====================================
+	app.get('/order', checkAuthenticated, function(req, res) {
+		res.render('order.ejs', {
+			user : req.user // get the user out of session and pass to template
+		});
+	});
 };
 
 // route middleware to make sure
