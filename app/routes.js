@@ -1,6 +1,9 @@
 const {checkNotAuthenticated, checkAuthenticated} = require('./../middlewares/check_admin')
 
-
+var mysql = require('mysql');
+var dbconfig = require('./../config/database');
+var connection = mysql.createConnection(dbconfig.connection);
+connection.query('USE ' + dbconfig.database);
 // app/routes.js
 module.exports = function(app, passport) {
 
@@ -80,6 +83,11 @@ module.exports = function(app, passport) {
 			user : req.user // get the user out of session and pass to template
 		});
 	});
+	app.post('/search', checkAuthenticated, function(req, res) {
+		let {name} = req.body;
+		let errors = [];
+		// console.log(name);
+	});
 	// =====================================
 	// UPDATE SECTION =========================
 	// =====================================
@@ -88,14 +96,31 @@ module.exports = function(app, passport) {
 			user : req.user // get the user out of session and pass to template
 		});
 	});
+	app.post('/update', checkAuthenticated, function(req, res) {
+		let {name, phone, address, bank, agencyid, partnerid} = req.body;
+		let errors = [];
+		console.log(name);
+		return res.redirect('/update')
+	});
 	// =====================================
 	// CATEGORY SECTION =========================
 	// =====================================
 	app.get('/category', checkAuthenticated, function(req, res) {
-		res.render('category.ejs', {
-			user : req.user // get the user out of session and pass to template
-		});
+		connection.query("SELECT * FROM Category",  function(err, rows) {
+			if(err){
+				console.log(err)
+			} else {
+				console.log(rows);
+				res.render('category.ejs', {categories: rows, user : req.user })
+			}
+		})
 	});
+	app.post('/category', checkAuthenticated, function(req, res) {
+		let {name} = req.body;
+		let errors = [];
+		
+	});
+	
 	// =====================================
 	// ORDER SECTION =========================
 	// =====================================
